@@ -45,7 +45,9 @@ for csv in "$DATA_DIR"/*.csv; do
     fi
 
     # Build a readable title from the filename
-    title=$(echo "$group" | sed 's/_/ — /; s/+/ + /g')
+    # Filename format: workflow_labels_basebranch
+    # e.g. mz-ci_mz-autotest_develop -> "mz-ci — mz-autotest (target: develop)"
+    title=$(echo "$group" | sed -E 's/_([^_]+)$/ (target: \1)/; s/_/ — /; s/\+/ + /g')
     title="$title — Execution Time (excl. queue)"
 
     echo "Generating plot for $group ..." >&2
